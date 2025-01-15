@@ -46,7 +46,9 @@ class GetData:
                 for year_month, file_url in itr_dict.items():
                     if start_year is None or (int(year_month.split('-')[0]) >= start_year and int(year_month.split('-')[0]) <= end_year):
                         file_response = self.__fetch_url(file_url, retries=1)
-                        with open(f'{year_month}.pdf', 'w+') as file:
+                        if not os.path.exists('pdf_files'):
+                            os.makedirs('pdf_files')
+                        with open(f'pdf_files/{year_month}.pdf', 'w+') as file:
                             file.write(file_response.content)
                         print(f'Downloaded: {year_month}.pdf')
             except Exception as e:
