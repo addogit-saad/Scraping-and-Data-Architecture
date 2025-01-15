@@ -1,0 +1,468 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN"
+  "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd">
+<html lang="en" dir="ltr"
+  xmlns:content="http://purl.org/rss/1.0/modules/content/"
+  xmlns:dc="http://purl.org/dc/terms/"
+  xmlns:foaf="http://xmlns.com/foaf/0.1/"
+  xmlns:og="http://ogp.me/ns#"
+  xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+  xmlns:sioc="http://rdfs.org/sioc/ns#"
+  xmlns:sioct="http://rdfs.org/sioc/types#"
+  xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema#">
+<head profile="http://www.w3.org/1999/xhtml/vocab">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="Generator" content="XXXXXXXXXXXXXXXXXXXXXXXXXXXX" X>
+<link rel="canonical" href="/reports" />
+<link rel="shortlink" href="/node/51" />
+<link rel="shortcut icon" href="https://crs.agripunjab.gov.pk/sites/crsagri7.pitb.gov.pk/governmentofpunjab.ico" type="image/vnd.microsoft.icon" />
+  <title>Crop Estimates | Crop Reporting Service</title>
+  <style>
+@import url("https://crs.agripunjab.gov.pk/modules/system/system.base.css?so7vtk");
+</style>
+<style>
+@import url("https://crs.agripunjab.gov.pk/sites/all/modules/date/date_api/date.css?so7vtk");
+@import url("https://crs.agripunjab.gov.pk/sites/all/modules/date/date_popup/themes/datepicker.1.7.css?so7vtk");
+@import url("https://crs.agripunjab.gov.pk/sites/all/modules/date/date_repeat_field/date_repeat_field.css?so7vtk");
+@import url("https://crs.agripunjab.gov.pk/modules/field/theme/field.css?so7vtk");
+@import url("https://crs.agripunjab.gov.pk/sites/all/modules/views_fractionslider/css/fractionslider.css?so7vtk");
+@import url("https://crs.agripunjab.gov.pk/sites/all/modules/workflow/workflow_admin_ui/workflow_admin_ui.css?so7vtk");
+@import url("https://crs.agripunjab.gov.pk/sites/all/modules/views/css/views.css?so7vtk");
+@import url("https://crs.agripunjab.gov.pk/sites/all/modules/ckeditor/css/ckeditor.css?so7vtk");
+</style>
+<style>
+@import url("https://crs.agripunjab.gov.pk/sites/all/modules/colorbox/styles/default/colorbox_style.css?so7vtk");
+@import url("https://crs.agripunjab.gov.pk/sites/all/modules/ctools/css/ctools.css?so7vtk");
+@import url("https://crs.agripunjab.gov.pk/sites/all/modules/lightbox2/css/lightbox.css?so7vtk");
+@import url("https://crs.agripunjab.gov.pk/sites/all/modules/panels/css/panels.css?so7vtk");
+</style>
+<link type="text/css" rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css" media="all" />
+<style>
+@import url("https://crs.agripunjab.gov.pk/sites/crs.agripunjab.gov.pk/themes/bootstrap/css/overrides.css?so7vtk");
+</style>
+  <!-- HTML5 element support for IE6-8 -->
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <script src="https://crs.agripunjab.gov.pk/sites/all/modules/jquery_update/replace/jquery/1.10/jquery.min.js?v=1.10.2"></script>
+<script src="https://crs.agripunjab.gov.pk/misc/jquery-extend-3.4.0.js?v=1.10.2"></script>
+<script src="https://crs.agripunjab.gov.pk/misc/jquery-html-prefilter-3.5.0-backport.js?v=1.10.2"></script>
+<script src="https://crs.agripunjab.gov.pk/misc/jquery.once.js?v=1.2"></script>
+<script src="https://crs.agripunjab.gov.pk/misc/drupal.js?so7vtk"></script>
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>
+<script src="https://crs.agripunjab.gov.pk/sites/all/modules/views_fractionslider/js/fractionslider.js?so7vtk"></script>
+<script src="https://crs.agripunjab.gov.pk/sites/all/libraries/colorbox/jquery.colorbox-min.js?so7vtk"></script>
+<script src="https://crs.agripunjab.gov.pk/sites/all/modules/colorbox/js/colorbox.js?so7vtk"></script>
+<script src="https://crs.agripunjab.gov.pk/sites/all/modules/colorbox/styles/default/colorbox_style.js?so7vtk"></script>
+<script src="https://crs.agripunjab.gov.pk/sites/all/modules/views_fractionslider/library/FractionSlider/jquery.fractionslider.js?so7vtk"></script>
+<script src="https://crs.agripunjab.gov.pk/sites/all/modules/lightbox2/js/lightbox.js?so7vtk"></script>
+<script>jQuery.extend(Drupal.settings, {"basePath":"\/","pathPrefix":"","setHasJsCookie":0,"ajaxPageState":{"theme":"bootstrap","theme_token":"eov-qQ5wzYryGNpyj_dMBZGcqFfwXVdQ18AdvCEFY2Y","js":{"sites\/crs.agripunjab.gov.pk\/themes\/bootstrap\/js\/bootstrap.js":1,"sites\/all\/modules\/jquery_update\/replace\/jquery\/1.10\/jquery.min.js":1,"misc\/jquery-extend-3.4.0.js":1,"misc\/jquery-html-prefilter-3.5.0-backport.js":1,"misc\/jquery.once.js":1,"misc\/drupal.js":1,"\/\/netdna.bootstrapcdn.com\/bootstrap\/3.0.2\/js\/bootstrap.min.js":1,"sites\/all\/modules\/views_fractionslider\/js\/fractionslider.js":1,"sites\/all\/libraries\/colorbox\/jquery.colorbox-min.js":1,"sites\/all\/modules\/colorbox\/js\/colorbox.js":1,"sites\/all\/modules\/colorbox\/styles\/default\/colorbox_style.js":1,"sites\/all\/modules\/views_fractionslider\/library\/FractionSlider\/jquery.fractionslider.js":1,"sites\/all\/modules\/lightbox2\/js\/lightbox.js":1},"css":{"modules\/system\/system.base.css":1,"sites\/all\/modules\/date\/date_api\/date.css":1,"sites\/all\/modules\/date\/date_popup\/themes\/datepicker.1.7.css":1,"sites\/all\/modules\/date\/date_repeat_field\/date_repeat_field.css":1,"modules\/field\/theme\/field.css":1,"sites\/all\/modules\/views_fractionslider\/css\/fractionslider.css":1,"sites\/all\/modules\/workflow\/workflow_admin_ui\/workflow_admin_ui.css":1,"sites\/all\/modules\/views\/css\/views.css":1,"sites\/all\/modules\/ckeditor\/css\/ckeditor.css":1,"sites\/all\/modules\/colorbox\/styles\/default\/colorbox_style.css":1,"sites\/all\/modules\/ctools\/css\/ctools.css":1,"sites\/all\/modules\/lightbox2\/css\/lightbox.css":1,"sites\/all\/modules\/panels\/css\/panels.css":1,"\/\/netdna.bootstrapcdn.com\/bootstrap\/3.0.2\/css\/bootstrap.min.css":1,"sites\/crs.agripunjab.gov.pk\/themes\/bootstrap\/css\/overrides.css":1}},"colorbox":{"opacity":"0.85","current":"{current} of {total}","previous":"\u00ab Prev","next":"Next \u00bb","close":"Close","maxWidth":"98%","maxHeight":"98%","fixed":true,"mobiledetect":true,"mobiledevicewidth":"480px","file_public_path":"\/","specificPagesDefaultValue":"admin*\nimagebrowser*\nimg_assist*\nimce*\nnode\/add\/*\nnode\/*\/edit\nprint\/*\nprintpdf\/*\nsystem\/ajax\nsystem\/ajax\/*"},"jcarousel":{"ajaxPath":"\/jcarousel\/ajax\/views"},"lightbox2":{"rtl":0,"file_path":"\/(\\w\\w\/)private:\/","default_image":"\/sites\/all\/modules\/lightbox2\/images\/brokenimage.jpg","border_size":10,"font_color":"000","box_color":"fff","top_position":"","overlay_opacity":"0.8","overlay_color":"000","disable_close_click":true,"resize_sequence":0,"resize_speed":400,"fade_in_speed":400,"slide_down_speed":600,"use_alt_layout":false,"disable_resize":false,"disable_zoom":false,"force_show_nav":false,"show_caption":true,"loop_items":false,"node_link_text":"View Image Details","node_link_target":false,"image_count":"Image !current of !total","video_count":"Video !current of !total","page_count":"Page !current of !total","lite_press_x_close":"press \u003Ca href=\u0022#\u0022 onclick=\u0022hideLightbox(); return FALSE;\u0022\u003E\u003Ckbd\u003Ex\u003C\/kbd\u003E\u003C\/a\u003E to close","download_link_text":"","enable_login":false,"enable_contact":false,"keys_close":"c x 27","keys_previous":"p 37","keys_next":"n 39","keys_zoom":"z","keys_play_pause":"32","display_image_size":"original","image_node_sizes":"()","trigger_lightbox_classes":"","trigger_lightbox_group_classes":"","trigger_slideshow_classes":"","trigger_lightframe_classes":"","trigger_lightframe_group_classes":"","custom_class_handler":0,"custom_trigger_classes":"","disable_for_gallery_lists":true,"disable_for_acidfree_gallery_lists":true,"enable_acidfree_videos":true,"slideshow_interval":5000,"slideshow_automatic_start":true,"slideshow_automatic_exit":true,"show_play_pause":true,"pause_on_next_click":false,"pause_on_previous_click":true,"loop_slides":false,"iframe_width":600,"iframe_height":400,"iframe_border":1,"enable_video":false,"useragent":"Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/131.0.0.0 Safari\/537.36"},"urlIsAjaxTrusted":{"\/reports":true},"bootstrap":{"anchorsFix":1,"anchorsSmoothScrolling":1,"popoverEnabled":1,"popoverOptions":{"animation":1,"html":0,"placement":"right","selector":"","trigger":"click","title":"","content":"","delay":0,"container":"body"},"tooltipEnabled":1,"tooltipOptions":{"animation":1,"html":0,"placement":"auto left","selector":"","trigger":"hover focus","delay":0,"container":"body"}}});</script>
+</head>
+<body class="html not-front not-logged-in no-sidebars page-node page-node- page-node-51 node-type-page" >
+  <div id="skip-link">
+    <a href="#main-content" class="element-invisible element-focusable">Skip to main content</a>
+  </div>
+    
+
+<script>
+      (function(d){
+         var s = d.createElement("script");
+         /* uncomment the following line to override default position*/
+         /* s.setAttribute("data-position", 3);*/
+         /* uncomment the following line to override default size (values: small, large)*/
+         /* s.setAttribute("data-size", "small");*/
+         /* uncomment the following line to override default language (e.g., fr, de, es, he, nl, etc.)*/
+         /* s.setAttribute("data-language", "language");*/
+         /* uncomment the following line to override color set via widget (e.g., #053f67)*/
+         /* s.setAttribute("data-color", "#053e67");*/
+         /* uncomment the following line to override type set via widget (1=person, 2=chair, 3=eye, 4=text)*/
+         /* s.setAttribute("data-type", "1");*/
+         /* s.setAttribute("data-statement_text:", "Our Accessibility Statement");*/
+         /* s.setAttribute("data-statement_url", "http://www.example.com/accessibility")";*/
+         /* uncomment the following line to override support on mobile devices*/
+         /* s.setAttribute("data-mobile", true);*/
+         /* uncomment the following line to set custom trigger action for accessibility menu*/
+         /* s.setAttribute("data-trigger", "triggerId")*/
+         s.setAttribute("data-account", "EaaDGrfoOr");
+         s.setAttribute("src", "https://cdn.userway.org/widget.js");
+         (d.body || d.head).appendChild(s);})(document)
+     </script>
+<noscript>
+Please ensure Javascript is enabled for purposes of
+<a href="https://userway.org">website accessibility</a>
+</noscript>
+
+
+<header id="navbar" role="banner" class="navbar container navbar-default">
+  <div class="container">
+    <div class="navbar-header">
+            <a class="logo navbar-btn pull-left" href="/" title="Home">
+        <img src="https://crs.agripunjab.gov.pk/sites/crs.agripunjab.gov.pk/themes/bootstrap/logo.png" alt="Home" />
+      </a>
+      
+      
+      <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+
+          <div class="navbar-collapse collapse">
+        <nav role="navigation">
+                      <ul class="menu nav navbar-nav"><li class="first collapsed"><a href="/about_us">About Us</a></li>
+<li class="collapsed"><a href="/surveys">Surveys</a></li>
+<li class="collapsed"><a href="/services">Services</a></li>
+<li class="expanded active-trail dropdown"><a href="/infodesk" class="active-trail dropdown-toggle" data-target="#" data-toggle="dropdown">Info Desk <span class="caret"></span></a><ul class="dropdown-menu"><li class="first leaf"><a href="/node/290">Punjab Districts at a Glance</a></li>
+<li class="leaf"><a href="/faqs">Frequently Asked Questions</a></li>
+<li class="expanded active-trail active"><a href="/reports" class="active-trail active">Crops Statistics</a></li>
+<li class="collapsed"><a href="/node/186">Cost of Production (COP)</a></li>
+<li class="collapsed"><a href="/node/163">CRS Literature</a></li>
+<li class="collapsed"><a href="/maps">GIS/Remote Sensing</a></li>
+<li class="leaf"><a href="/node/195">CRS Activity Calendar</a></li>
+<li class="last leaf"><a href="/node/197">Crop Insurance</a></li>
+</ul></li>
+<li class="leaf"><a href="https://crs-agripunjab.punjab.gov.pk/node/117">News &amp; Events</a></li>
+<li class="last collapsed"><a href="/gallery">Gallery</a></li>
+</ul>                                            <div class="region region-navigation">
+        <section id="block-search-form" class="block block-search clearfix">
+<form class="form-search content-search" action="/reports" method="post" id="search-block-form" accept-charset="UTF-8"><div><div>
+      <h2 class="element-invisible">Search form</h2>
+    <div class="input-group"><input title="Enter the terms you wish to search for." placeholder="Search" class="form-control form-text" type="text" id="edit-search-block-form--2" name="search_block_form" value="" size="15" maxlength="128" /><span class="input-group-btn"><button type="submit" class="btn btn-default"><i class="icon glyphicon glyphicon-search" aria-hidden="true"></i></button></span></div><button class="element-invisible btn btn-primary form-submit" id="edit-submit" name="op" value="Search" type="submit">Search</button>
+<input type="hidden" name="form_build_id" value="form-QQkadCmH801Gp1IGHa5vEUWQwURKEPF6pqO_PFwoiVw" />
+<input type="hidden" name="form_id" value="search_block_form" />
+</div>
+</div></form></section> <!-- /.block -->
+    <section id="block-block-13" class="block block-block clearfix">
+<div class="header-btn">
+    <a href="https://crs.agripunjab.gov.pk/urdu">اردو</a>
+</div></section> <!-- /.block -->
+  </div>
+                  </nav>
+      </div>
+      </div>
+</header>
+
+<div class="main-container container">
+
+<!-- Custom Regions -->  
+  
+  	<div class="row">
+  		<div class="banner1 col-sm-12">
+					</div>
+        <div class="banner2 col-sm-12">
+					</div>
+		<div class="banner3 col-sm-12">
+					</div>
+		<div class="banner4 col-sm-12">
+					</div>
+        <div class="banner5 col-sm-12">
+					</div>
+    </div>
+    
+    <div class="row">
+    	<div class="top_left col-sm-4">
+        	        </div>
+        <div class="top_center col-sm-4">
+        	        </div>
+        <div class="top_right col-sm-4">
+        	        </div>
+    </div>
+    
+<!-- Custom Regions -->  
+
+  <header role="banner" id="page-header">
+    
+      </header> <!-- /#page-header -->
+  
+  
+    
+  <div class="row">
+
+    
+    <section class="col-sm-12" id="internal-page-bg">
+            <ol class="breadcrumb"><li class="first"><a href="/">Home</a></li>
+<li><a href="/infodesk" class="active-trail">Info Desk</a></li>
+<li class="active last">Crop Estimates</li>
+</ol>      <a id="main-content"></a>
+                    <h1 class="title" id="page-title">
+          Crop Estimates        </h1>
+                                                          <div class="region region-content">
+        <section id="block-system-main" class="block block-system clearfix">
+<div id="node-51" class="node node-page clearfix" about="/reports" typeof="foaf:Document">
+
+  
+      <span property="dc:title" content="Crop Estimates" class="rdf-meta element-hidden"></span><span property="sioc:num_replies" content="0" datatype="xsd:integer" class="rdf-meta element-hidden"></span>
+  
+  <div class="content">
+    <div class="field field-name-body field-type-text-with-summary field-label-hidden"><div class="field-items"><div class="field-item even" property="content:encoded"><table align="center" border="0" cellpadding="0" cellspacing="0" style="width:100%"><tbody><tr><td colspan="2">
+<h3>Current Estimates </h3>
+</td>
+</tr><tr><td>
+<h4>2024-25</h4>
+</td>
+<td>
+<h4> 2024-25                                                                                                            </h4>
+</td>
+</tr><tr><td>
+<ul><li>Kharif Crops Estimates</li>
+</ul></td>
+<td>
+<ul><li><a href="https://crs-agripunjab.punjab.gov.pk/node/318" target="_blank">Rabi Crops Estimates</a></li>
+</ul></td>
+</tr><tr><td colspan="2" rowspan="1">
+<table border="0" cellpadding="0" cellspacing="0" style="width:1549px"><tbody><tr><td colspan="2">
+<h3><a id="annual" name="annual"></a>Annual Books of Estimates</h3>
+</td>
+</tr></tbody></table></td>
+</tr><tr><td> </td>
+<td> </td>
+</tr><tr><td>
+<p>2023-24</p>
+<ul><li><a href="https://crs-agripunjab.punjab.gov.pk/system/files/Final%20Kharif%20Estimates%202023-24_0.pdf#overlay-context=reports" target="_blank">Final Kharif Crops Estimates</a></li>
+<li><a href="https://crs-agripunjab.punjab.gov.pk/system/files/Final%20Rabi%20Estimates%202023-24.pdf#overlay-context=reports" target="_blank">Final Rabi Crops Estimates</a></li>
+</ul></td>
+<td> </td>
+</tr><tr><td>
+<h4>2021-22</h4>
+</td>
+<td>
+<h4>2022-23</h4>
+</td>
+</tr><tr><td>
+<ul><li><a href="https://crs-agripunjab.punjab.gov.pk/system/files/13-Book%20Kharif%20Final%202021-22.pdf#overlay-context=reports" target="_blank">Final Kharif Crops Estimates</a></li>
+<li><a href="https://crs-agripunjab.punjab.gov.pk/system/files/12-Book%20Rabi%20Final%202021-22_0.pdf#overlay-context=reports" target="_blank">Final Rabi Crops Estimates</a></li>
+</ul></td>
+<td>
+<ul><li><a href="https://crs-agripunjab.punjab.gov.pk/system/files/Final%20Kharif%20Estimates%202022-23%20%28Book%29_4.pdf#overlay-context=reports" target="_blank">Final Kharif Crops Estimates</a></li>
+<li><a href="https://crs-agripunjab.punjab.gov.pk/system/files/Final%20Rabi%20Estimates%202022-23_1.pdf#overlay-context=reports" target="_blank">Final Rabi Crops Estimates</a></li>
+</ul></td>
+</tr><tr><td>
+<h4>2020-21</h4>
+</td>
+<td>
+<h4>2019-20</h4>
+</td>
+</tr><tr><td>
+<ul><li><a href="https://crs-agripunjab.punjab.gov.pk/system/files/Kharif%20Estimates%202020-2021%20%28PDF%29%20final_0.pdf#overlay-context=reports" target="_blank">Final Kharif Crops Estimates</a></li>
+<li><a href="https://crs-agripunjab.punjab.gov.pk/system/files/9-Book%20Rabi%20Final%20Estimates%202020-21_1.pdf#overlay-context=reports" target="_blank">Final Rabi Crops Estimates  </a></li>
+</ul></td>
+<td>
+<ul><li><a href="https://crs-agripunjab.punjab.gov.pk/system/files/Book%20Final%20Kharif%20Estimates%202019-20_0.pdf#overlay-context=reports" target="_blank">Final Kharif  Crops Estimates</a></li>
+<li><a href="https://crs-agripunjab.punjab.gov.pk/system/files/book%20of%20Final%20estimates%20of%20rabi%20crops%202019-20.pdf#overlay-context=reports" target="_blank">Final Rabi Crops Estimates</a>  </li>
+</ul></td>
+</tr><tr><td>
+<h4>2018-19</h4>
+</td>
+<td>
+<h4>2017 - 18</h4>
+</td>
+</tr><tr><td>
+<ul><li><a href="http://crs-agripunjab.punjab.gov.pk/system/files/Kharif%20Estimates%202018-19.pdf#overlay-context=reports" target="_blank">Final </a><a href="https://crs-agripunjab.punjab.gov.pk/system/files/Kharif%20Estimates%202018-19.pdf#overlay-context=reports" target="_blank">Kharif Crops </a><a href="http://crs-agripunjab.punjab.gov.pk/system/files/Kharif%20Estimates%202018-19.pdf#overlay-context=reports" target="_blank">Estimates</a></li>
+<li><a href="https://crs-agripunjab.punjab.gov.pk/system/files/Book%20final%20Rabi%20Estimates%202018-19.pdf#overlay-context=reports" target="_blank">Final Rabi Crops Estimates</a></li>
+</ul></td>
+<td>
+<ul><li><a href="https://crs-agripunjab.punjab.gov.pk/system/files/BOOK%20KHARIF%20Final%20Est%202017-18.pdf#overlay-context=reports" target="_blank">​​Final Kharif Crops Estimates</a></li>
+<li>​<a href="https://crs-agripunjab.punjab.gov.pk/system/files/Book%20Rabi%20Final%20Estimates%202017-18.pdf#overlay-context=reports" target="_blank">Final Rabi Crops Estimates</a></li>
+</ul></td>
+</tr><tr><td>
+<h4>2016 - 17</h4>
+</td>
+<td>
+<h4>2015 - 16</h4>
+</td>
+</tr><tr><td style="width:50%">
+<ul><li><a href="https://crs-agripunjab.punjab.gov.pk/system/files/BOOK%20KHARIF%20FINAL%202016-17.pdf#overlay-context=reports" target="_blank">Final Kharif Crops Estimates</a></li>
+<li><a href="https://crs-agripunjab.punjab.gov.pk/system/files/BOOK%20RABI%20FINAL%202016-17.pdf#overlay-context=reports" target="_blank">Final Rabi Crops Estimates</a></li>
+</ul></td>
+<td>
+<ul><li><a href="https://crs-agripunjab.punjab.gov.pk/system/files/Kharif%20Final%20Estimates%202015-16%20Book.pdf#overlay-context=reports" target="_blank">Final Kharif Crops Estimates</a></li>
+<li><a href="https://crs-agripunjab.punjab.gov.pk/system/files/RABI%20BOOK%202015-16%20FINAL%20EST.pdf#overlay-context=reports" target="_blank">Final Rabi Crops Estimates</a></li>
+</ul></td>
+</tr><tr><td>
+<h4>2014 -15</h4>
+</td>
+<td>
+<h4>2013-14</h4>
+</td>
+</tr><tr><td>
+<ul><li><a href="https://crs-agripunjab.punjab.gov.pk/system/files/Kharif%20Crop%20Estimate%20Book%20Data%202014-15.pdf#overlay-context=reports" target="_blank">Final Kharif Crops Estimates</a></li>
+<li><a href="https://crs-agripunjab.punjab.gov.pk/system/files/FINAL%20RABI%20CROPS%20%20ESTIMATES%202014-15.pdf#overlay-context=reports" target="_blank">Final Rabi Crops Estimates</a></li>
+</ul></td>
+<td>
+<ul><li><a href="https://crs-agripunjab.punjab.gov.pk/system/files/FINAL%20KHARIF%20CROPS%20ESTIMATE%20%202013-2014-FINAL.pdf#overlay-context=reports" target="_blank">Final Kharif Crops Estimates</a></li>
+<li><a href="https://crs-agripunjab.punjab.gov.pk/system/files/BOOK%20Final%20Rabi%20Estimates%202013-14.pdf#overlay-context=reports" target="_blank">Final Rabi Crops Estimates</a></li>
+</ul></td>
+</tr><tr><td>
+<h4>2011-12</h4>
+</td>
+<td>
+<h4>2012-13</h4>
+</td>
+</tr><tr><td>
+<ul><li><a href="https://crs-agripunjab.punjab.gov.pk/system/files/Kharif%20Book%202011-12%20For%20Web.pdf#overlay-context=reports" target="_blank">Final Kharif Crops Estimates</a></li>
+<li><a href="https://crs-agripunjab.punjab.gov.pk/system/files/Rabi%20Book%20All%20estimates%202011-12%20for%20website%20for%20upload%20ready%20for%20web.pdf#overlay-context=reports" target="_blank">Final Rabi Crops Estimates</a></li>
+</ul></td>
+<td>
+<ul><li><a href="https://crs-agripunjab.punjab.gov.pk/system/files/Kharif%20Book%202012-13.pdf#overlay-context=reports" target="_blank">Final Kharif Crops Estimates</a></li>
+<li><a href="https://crs-agripunjab.punjab.gov.pk/system/files/Final%20Rabi%20Estimate%202012-13.pdf#overlay-context=reports" target="_blank">Final Rabi Crops Estimates</a></li>
+</ul></td>
+</tr><tr><td>
+<h4>2010-11</h4>
+</td>
+<td>
+<h4>2009-10</h4>
+</td>
+</tr><tr><td>
+<ul><li><a href="https://crs-agripunjab.punjab.gov.pk/system/files/Kharif%20Estimate%202010-11-Final.pdf#overlay-context=reports" target="_blank">Final Kharif Crops Estimates</a></li>
+<li><a href="https://crs-agripunjab.punjab.gov.pk/system/files/Rabi%20Estimate%202010-11.pdf#overlay-context=reports" target="_blank">Final Rabi Crops Estimates</a></li>
+</ul></td>
+<td>
+<ul><li><a href="https://crs-agripunjab.punjab.gov.pk/system/files/Final%20Kharif%20Estimates%20book%202009-10.pdf#overlay-context=reports" target="_blank">Final Kharif Crops Estimates</a></li>
+<li><a href="https://crs-agripunjab.punjab.gov.pk/system/files/1-Book%20Rabi%20Final%20Estimates%202009-10_0.pdf#overlay-context=reports" target="_blank">Final Rabi Crops Estimates</a></li>
+</ul></td>
+</tr><tr><td>
+<h4>2008-09</h4>
+</td>
+<td>
+<h4>2007-08</h4>
+</td>
+</tr><tr><td>
+<ul><li><a href="https://crs-agripunjab.punjab.gov.pk/system/files/10-Rabi%20Kharif%202008-09.pdf#overlay-context=reports" target="_blank">Final Kharif &amp; Rabi Estimates</a></li>
+</ul></td>
+<td>
+<ul><li><a href="https://crs-agripunjab.punjab.gov.pk/system/files/11-Rabi%20Kharif%202007-08.pdf#overlay-context=reports" target="_blank">Final Kharif &amp; Rabi Estimates</a></li>
+</ul></td>
+</tr><tr><td>
+<h3>Historical Crops Data</h3>
+</td>
+<td> </td>
+</tr><tr><td>
+<ul><li><a href="https://crs-agripunjab.punjab.gov.pk/node/165#overlay-context=reports" target="_self">Time Series Data from 1990 to 2021</a></li>
+<li>Times Series Data from 2022 to onward</li>
+</ul></td>
+<td>
+<ul><li><a href="https://crs-agripunjab.punjab.gov.pk/node/294#overlay-context=node/294" target="_self">Province Wise (Pakistan) Time Series Data</a></li>
+</ul></td>
+</tr></tbody></table><h3> </h3>
+<div id="__if72ru4sdfsdfrkjahiuyi_once" style="display:none;"> </div>
+<div id="__if72ru4sdfsdfruh7fewui_once" style="display:none;"> </div>
+<div id="__hggasdgjhsagd_once" style="display:none;"> </div>
+</div></div></div>  </div>
+
+  
+  
+</div>
+</section> <!-- /.block -->
+  </div>
+    </section>
+
+    
+  </div>
+</div>
+<footer class="footer container">
+    <div class="region region-footer">
+        <section id="block-block-11" class="block block-block clearfix">
+<div class="footer-wrapper">
+<div class="footer-upper">
+	<div class="footer-links"><a href="/jobs">Jobs</a><a href="/tenders">Tenders</a><a href="/offices">Contact Us</a><a href="/sitemap">Site map</a></div>
+</div></section> <!-- /.block -->
+    <section id="block-block-12" class="block block-block clearfix">
+<div class="footer-middle row">
+	<div class="footer-col col-sm-4" id="about-us">
+            <div class="footer-list-wrap">
+                <div class="footer-heading">About Us</div>
+                  <div class="col-sm-6" id="overview">
+                <div class="footer-list">
+                    <ul>
+                        <li><a href="/overview">Overview</a></li>
+<hr>
+             
+                        <li><a href="/functions">Functions</a></li>
+<hr>
+                        <li><a href="/our_director">Our Directors</a></li>
+<hr>
+                        <li><a href="/coreteam">Core Team</a></li>
+<hr>
+                        <li><a href="/organogram">Organogram</a></li>
+
+                    </ul>
+                </div>
+            </div>
+    <div class="col-sm-6" id="organogram">
+                <div class="footer-list">
+                    <ul>
+                        <li><a href="/offices">Our Offices</a></li>
+<hr>
+                        <li><a href="/collaboration_partners">Our Collaborating Partners</a></li>
+<hr>
+                        <li><a href="http://crs.agripunjab.gov.pk/urdu/system/files/SERVICE%20RULES%20Copy_0.pdf" target="_blank">Rules and Regulations</a></li>
+<hr>
+                        <li><a href="/budget">Our Budget</a></li>
+<hr>
+                        <li><a href="/future_plans">Future Plans</a></li>
+                      
+                    </ul>
+                </div>
+            </div>
+              
+         
+        </div>
+        </div>
+	 <div class="footer-col col-sm-4" id="types-of-survey">
+          <div class="footer-heading">Types of Surveys</div>
+          <div class="footer-heading-caption">
+Different surveys which are conducted by the department are listed below:
+          </div>
+          <div class="survey-types-list">
+          	<ul>
+          		<li><a href="/types">Kharif Crops Acreage </a></li>
+<hr>
+          		<li><a href="/types">Rabi Acreage</a></li>
+<hr>
+          		<li><a href="/types">Special Acreage (Potato and Sugarcane)</a></li>
+
+          	</ul>
+          	<a href="/types" class="footer-view">View All</a>
+          </div>
+
+                 </div>
+          <div class="footer-col col-sm-4" id="contact-us">
+          
+           <div class="contact-wrap">
+                <div class="footer-heading">Contact Us</div>
+                <ul>
+                    <li class="contact-icon contact-add">Directorate of Agriculture, Crop Reporting Service</li>
+                    <div class="contact-icon address-caption">Soil Survey of Punjab Building
+Post Office Awan Town-54780
+Near PTCL Exchange, Multan Road, Lahore	</div>
+                    <li class="contact-icon contact-ph">(042) 99330377, (042) 99330378, (042) 99330384</li>
+                    
+                    <li class="contact-icon contact-email"><a href="mailto:dacrspunjab@hotmail.com">dacrspunjab@hotmail.com</a></li>
+                </ul>
+            </div>
+        </div>
+        
+      
+      
+       
+    </div></section> <!-- /.block -->
+    <section id="block-block-7" class="block block-block clearfix">
+<div class="footer-wrapper">
+
+
+<div class="copy-wrapper row">
+<div class="col-sm-6 copy-sec">© Crop Reporting Service, <a href="https://www.punjab.gov.pk/" target="_blank">Government of The Punjab</a></div>
+<div class="col-sm-6 power-sec">Powered by:<a href="https://www.pitb.gov.pk/" target="_blank"> Punjab Information Technology Board</a></div>
+</div>
+</div></section> <!-- /.block -->
+  </div>
+</footer>
+  <script src="https://crs.agripunjab.gov.pk/sites/crs.agripunjab.gov.pk/themes/bootstrap/js/bootstrap.js?so7vtk"></script>
+</body>
+</html>
