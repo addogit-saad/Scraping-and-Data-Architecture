@@ -47,7 +47,7 @@ class GetData:
                         file_response = self.__fetch_url(file_url, retries=1)
                         if not os.path.exists('pdf_files'):
                             os.makedirs('pdf_files')
-                        with open(f'pdf_files/{year_month}.pdf', 'w+') as file:
+                        with open(f'pdf_files/{name}_{year_month}.pdf', 'w+') as file:
                             file.write(file_response.content)
                         print(f'Downloaded: {year_month}.pdf')
             except Exception as e:
