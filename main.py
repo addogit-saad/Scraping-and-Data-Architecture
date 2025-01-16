@@ -1,5 +1,28 @@
 from scrapper import GetData
+from parser import PDFParser
+import os
 import argparse
+from cleaner import create_cleaned_table
+import pandas as pd
+
+def clean_all_files(parsed_arr, year_col):
+    data_arr = []
+    for data in parsed_arr:
+        data_arr.append(create_cleaned_table(data, year_col))
+    return pd.concat(data_arr, axis=0)
+
+def parse(base_dir='pdf_files'):
+    file_paths = os.listdir(base_dir)
+    for file_path in file_paths:
+        if file_path == 'backup':
+            continue
+        parser = PDFParser(os.path.join(base_dir, file_path))
+        parsed_data = parser.parse_pdf()
+        crop_type, _, year_col = file_path.split('_')
+        year_col = year_col.split('.')[0]
+        combined_df  = clean_all_files(parsed_data, year_col)
+        combined_df.to_csv(f'{crop_type}_{year_col}.csv')
+
 def main():
     parser = argparse.ArgumentParser(description='Process some integers.')
     parser.add_argument('--cmd', type=str, help="""
@@ -20,13 +43,13 @@ def main():
             scraper = GetData(base_link)
             scraper.download()
         case 'parse':
-            raise NotImplementedError
+            pass
         case _:
             base_link = 'https://crs.agripunjab.gov.pk/reports'
             scraper = GetData(base_link, force=True)
             scraper.download()
-
     # Parse data here
+    parse()
 
 if __name__ == '__main__':
     main()

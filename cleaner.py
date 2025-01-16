@@ -6,7 +6,7 @@ def create_cleaned_table(data, year_col):
     df = data['table'].copy(deep=True)
 
     # Fix column names
-    df.iloc[0].ffill(inplace=True, axis=0)
+    df.iloc[0] = df.iloc[0].ffill(axis=0)
     if df.iloc[1, 0] is None:
         df.at[0, 0], df.at[1, 0] = df.iloc[0, 0].split(' /\n')
     if data['unit'] == '':
@@ -14,17 +14,27 @@ def create_cleaned_table(data, year_col):
     df.at[0, 0] = df.iloc[0, 0].upper().strip()
     df.at[1, 0] = df.iloc[1, 0].upper().strip()
     df.columns = pd.MultiIndex.from_arrays([df.iloc[0], df.iloc[1]])
-    df = df.drop([0, 1]).reset_index(drop=True)
-    df = df.replace('', np.nan)
-    df.dropna(axis=0, how='all', inplace=True)
+
+    def fetch_drop_index(iter_df):
+        ix = 0
+        for row in iter_df[('DIVISIONS', 'DISTRICTS')]:
+            ix += 1
+            if row == 'PUNJAB':
+                return ix
+        return -1
+
+    # Fix column levels
     if data['unit'] == '':
         df.columns = df.columns.swaplevel(0, 1)
         df = df[['DIVISIONS', year_col]]
+        drop_index = fetch_drop_index(df)
+        df = df.iloc[drop_index+1:]
         df.columns = df.columns.droplevel(1)
     else:
         df = df[['DIVISIONS', year_col]]
+        drop_index = fetch_drop_index(df)
+        df = df.iloc[drop_index+1:]
         df.columns = df.columns.droplevel(0)
-    df = df[~(df['DISTRICTS'].str.upper().str.contains('PUNJAB'))].reset_index(drop=True)
 
     # Add divisions
     df['DIVISIONS'] = ''
@@ -62,5 +72,5 @@ def create_cleaned_table(data, year_col):
             return 'NOVAL'
     df['MEASURE_VALUE'] = df['MEASURE_VALUE'].apply(convert_to_numeric)
     df = df[df['MEASURE_VALUE'] != 'NOVAL']
-    df['MEASURE_VALUE'] = df['MEASURE_VALUE'].astype(np.float32)
+    df.loc[:, 'MEASURE_VALUE'] = df['MEASURE_VALUE'].astype(np.float32)
     return df[['YEAR', 'TITLE', 'DIVISIONS', 'DISTRICTS', 'MEASURE_TYPE', 'UNIT', 'MEASURE_VALUE']].reset_index()
