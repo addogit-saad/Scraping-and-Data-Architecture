@@ -37,8 +37,17 @@ class PDFParser:
         return None if heading == '' else (heading, unit)
 
     def get_tables(self, page):
-        tables = page.extract_tables()
-        return pd.DataFrame(tables[0])
+        settings = {
+            "vertical_strategy": "text",
+            "horizontal_strategy": 'text'
+        }   
+        table = page.extract_table(table_settings=settings)
+        table_df = pd.DataFrame(table)
+        header = page.extract_table()
+        header_df = pd.DataFrame(header).iloc[:2]
+        table_df.at[0] = header_df.iloc[0]
+        table_df.at[1] = header_df.iloc[1]
+        return table_df.iloc[:-1]
 
     def parse_pdf(self):
         data = DataStore()
@@ -59,4 +68,4 @@ if __name__ == '__main__':
     parser = PDFParser(file_path)
     parsed_data = parser.parse_pdf()
 
-    print(parsed_data[-5])
+    print(parsed_data[0]['table'])
