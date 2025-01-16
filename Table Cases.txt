@@ -1,0 +1,9 @@
+- unit specified in circular brackets above table. 
+    - This table has the first level of columns as the year and % production. 
+    [NO CHANGE NEEDED]
+
+Identified by no unit ('') in unit dict.
+- Unit not specified in circular brackets above table.
+    - This table has the second level of columns as the year and & production.
+    [FLIP LEVEL 1 & LEVEL 2]
+    [EXTRACT UNIT FROM LEVEL 1 OF COLUMN HEADERS]
