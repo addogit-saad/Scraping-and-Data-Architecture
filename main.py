@@ -11,7 +11,7 @@ def clean_all_files(parsed_arr, year_col):
         data_arr.append(create_cleaned_table(data, year_col))
     return pd.concat(data_arr, axis=0)
 
-def parse(base_dir='pdf_files'):
+def parse(base_dir='pdf_files', prev_year_incl=False):
     file_paths = os.listdir(base_dir)
     for file_path in file_paths:
         if file_path == 'backup':
@@ -21,6 +21,11 @@ def parse(base_dir='pdf_files'):
         crop_type, _, year_col = file_path.split('_')
         year_col = year_col.split('.')[0]
         combined_df  = clean_all_files(parsed_data, year_col)
+        if prev_year_incl:
+            year_1, year_2 = list(map(lambda x: int(x), year_col.split('-')))
+            year_col_2 = f'{year_1-1}-{year_2-1}'
+            combined_df_2 = clean_all_files(parsed_data, year_col_2)
+            combined_df = pd.concat([combined_df, combined_df_2], axis=0)
         combined_df.to_csv(f'{crop_type}_{year_col}.csv')
 
 def main():
@@ -32,6 +37,11 @@ def main():
                             download: Download the pdf files.
                             parse: Parse the pdf files.
                         """)
+    parser.add_argument('--prev', type=bool, help="""
+                        default case is don't include.
+                        specifying a bool value of True means each current file would 
+                        include previous years data.
+    """)
     args = parser.parse_args()
 
     match args.cmd:
@@ -49,7 +59,8 @@ def main():
             scraper = GetData(base_link, force=True)
             scraper.download()
     # Parse data here
-    parse()
+    prev_year_incl = args.prev
+    parse(prev_year_incl=prev_year_incl)
 
 if __name__ == '__main__':
     main()
