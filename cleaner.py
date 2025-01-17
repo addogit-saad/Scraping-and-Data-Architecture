@@ -2,7 +2,7 @@ import pandas as pd
 import re
 import numpy as np
 
-def create_cleaned_table(data, year_col):
+def create_cleaned_table(data, crop_type, year_col):
     df = data['table'].copy(deep=True)
 
     # Fix column names
@@ -42,6 +42,11 @@ def create_cleaned_table(data, year_col):
     for ix, row in df.iterrows():
         district_val = row['DISTRICTS']
         extract = re.search(r'(.*) D.*V:', district_val, flags = re.IGNORECASE)
+        # Drop row if row district has punjab.
+        extract_drop = re.search(r'.*PUNJAB.*', district_val, flags = re.IGNORECASE)
+        if extract_drop:
+            df.drop(index=ix, axis=0, inplace=True)
+            continue
         if extract:
             last_div = extract.group(1)
             df.loc[ix, 'DIVISIONS'] = extract.group(1)
@@ -54,7 +59,7 @@ def create_cleaned_table(data, year_col):
     col_list = df.columns.tolist()
     df = pd.melt(df, id_vars=[col_list[0], col_list[-1]], var_name='MEASURE_TYPE', value_name='MEASURE_VALUE')
     df['TITLE'] = data['heading']
-    df['YEAR'] = int(year_col.split('-')[0])
+    df['YEAR'] = year_col
 
     # Add unit value
     if data['unit'] == '':
@@ -73,4 +78,5 @@ def create_cleaned_table(data, year_col):
     df['MEASURE_VALUE'] = df['MEASURE_VALUE'].apply(convert_to_numeric)
     df = df[df['MEASURE_VALUE'] != 'NOVAL']
     df.loc[:, 'MEASURE_VALUE'] = df['MEASURE_VALUE'].astype(np.float32)
-    return df[['YEAR', 'TITLE', 'DIVISIONS', 'DISTRICTS', 'MEASURE_TYPE', 'UNIT', 'MEASURE_VALUE']].reset_index()
+    df['CROP_TYPE'] = crop_type.title()
+    return df[['CROP_TYPE', 'YEAR', 'TITLE', 'DIVISIONS', 'DISTRICTS', 'MEASURE_TYPE', 'UNIT', 'MEASURE_VALUE']].reset_index(drop=True)
