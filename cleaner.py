@@ -66,7 +66,11 @@ def create_cleaned_table(data, crop_type, year_col):
         df['UNIT'] = ''
         for ix, row in df.iterrows():
             row_val = row['MEASURE_TYPE']
-            df.loc[ix, 'MEASURE_TYPE'], df.loc[ix, 'UNIT'] = re.search(r'(.*)\((.*)\)', row_val).groups()
+            try:
+                df.loc[ix, 'MEASURE_TYPE'], df.loc[ix, 'UNIT'] = re.search(r'(.*)\((.*)\)', row_val).groups()
+            except Exception:
+                temp = df.loc[ix, 'UNIT'].split(' ')
+                df.loc[ix, 'MEASURE_TYPE'], df.loc[ix, 'UNIT'] = temp[0], temp[-1]
 
     else:
         df['UNIT'] = data['unit']

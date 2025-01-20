@@ -13,16 +13,17 @@ def clean_all_files(parsed_arr, crop_type, year_col):
 
 def parse(base_dir, prev_year_incl):
     if os.path.isfile(base_dir):
-        file_paths = [base_dir]
+        base_dir, file_paths = base_dir.split('/')
+        file_paths = [file_paths]
     else:
         file_paths = os.listdir(base_dir)
     for file_path in file_paths:
         if file_path == 'backup':
             continue
-        parser = PDFParser(os.path.join(base_dir, file_path))
-        parsed_data = parser.parse_pdf()
         crop_type, _, year_col = file_path.split('_')
         year_col = year_col.split('.')[0]
+        parser = PDFParser(os.path.join(base_dir, file_path), year_col)
+        parsed_data = parser.parse_pdf()
         combined_df  = clean_all_files(parsed_data, crop_type, year_col)
         if prev_year_incl:
             year_1, year_2 = list(map(lambda x: int(x), year_col.split('-')))
@@ -65,7 +66,7 @@ def main():
             scraper = GetData(base_link, force=True)
             scraper.download()
     # Parse data here
-    prev_year_incl = args.prev if args.prev else False
+    prev_year_incl = args.prev if args.prev is not None else False
     base_dir = args.base_dir if args.base_dir else 'pdf_files'
     parse(base_dir, prev_year_incl=prev_year_incl)
 
