@@ -8,7 +8,10 @@ def create_cleaned_table(data, crop_type, year_col):
     # Fix column names
     df.iloc[0] = df.iloc[0].ffill(axis=0)
     if df.iloc[1, 0] is None:
-        df.at[0, 0], df.at[1, 0] = df.iloc[0, 0].split(' /\n')
+        try:
+            df.at[0, 0], df.at[1, 0] = df.iloc[0, 0].split('/\n')
+        except Exception:
+            df.at[0, 0], df.at[1, 0] = df.iloc[0, 0].split('/')
     if data['unit'] == '':
         df.at[0, 0], df.at[1, 0] = df.iloc[1, 0], df.iloc[0, 0]
     df.at[0, 0] = df.iloc[0, 0].upper().strip()
@@ -19,7 +22,7 @@ def create_cleaned_table(data, crop_type, year_col):
         ix = 0
         for row in iter_df[('DIVISIONS', 'DISTRICTS')]:
             ix += 1
-            if row == 'PUNJAB':
+            if 'PUNJAB' in row:
                 return ix
         return -1
 
@@ -41,7 +44,7 @@ def create_cleaned_table(data, crop_type, year_col):
     last_div = ''
     for ix, row in df.iterrows():
         district_val = row['DISTRICTS']
-        extract = re.search(r'(.*) D.*V:', district_val, flags = re.IGNORECASE)
+        extract = re.search(r'(.*) D.*V.*:', district_val, flags = re.IGNORECASE)
         # Drop row if row district has punjab.
         extract_drop = re.search(r'.*PUNJAB.*', district_val, flags = re.IGNORECASE)
         if extract_drop:

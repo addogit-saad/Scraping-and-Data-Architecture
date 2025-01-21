@@ -41,9 +41,9 @@ def main():
                             download: Download the pdf files.
                             parse: Parse the pdf files.
                         """)
-    parser.add_argument('--prev', type=bool, help="""
+    parser.add_argument('--prev', type=int, help="""
                         default case is don't include.
-                        specifying a bool value of True means each current file would 
+                        specifying an int (0=False, 1=True) value of True means each current file would 
                         include previous years data.
     """)
     parser.add_argument('--base_dir', type=str, help="""
@@ -66,7 +66,7 @@ def main():
             scraper = GetData(base_link, force=True)
             scraper.download()
     # Parse data here
-    prev_year_incl = args.prev if args.prev is not None else False
+    prev_year_incl = bool(args).prev if args.prev is not None else False
     base_dir = args.base_dir if args.base_dir else 'pdf_files'
     parse(base_dir, prev_year_incl=prev_year_incl)
 

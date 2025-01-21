@@ -52,84 +52,73 @@ class PDFParser:
                 self.__get_tabulator__ = tabulator
             case '2022-23':
                 raise NotImplementedError
-                def text_extractor(page):
-                    page_text = page.extract_text()
-                    try:
-                        heading = re.search(r'.*FINAL ESTIMATE OF(.*?)\n', page_text, re.DOTALL).group(1).strip() if page_text else ''
-                        unit_search = re.search(r'(AREA .*|AV\. .*|AVG\. .*|PROD: .*|PRODUCTION .*|AV: |YIELD )\n', page_text)
-                        unit = unit_search.group(1).strip().replace(')', '') if unit_search else ''
-                    except AttributeError as e:
-                        return None
-                    return None if heading == '' else (heading, unit)
-                def tabulator(page):
-                    settings = {
-                        "vertical_strategy": "text",
-                        "horizontal_strategy": "text"
-                    }
-                    table = page.extract_table(table_settings=settings)
-                    table_df = pd.DataFrame(table)
-                    header = page.extract_table()
-                    header_df = pd.DataFrame(header).iloc[:2]
-                    table_df.at[0] = header_df.iloc[0]
-                    table_df.at[1] = header_df.iloc[1]
-                    return table_df.iloc[:-1]
-                self.__get_text__ = text_extractor
-                self.__get_tabulator__ = tabulator
             case '2021-22':
                 def text_extractor(page):
                     page_text = page.extract_text()
                     try:
-                        t1 = re.search(
-                            r'.*FINAL ESTIMATE OF(.*?)\n', 
-                            page_text, 
-                            re.DOTALL
-                        )
-                        t2 = re.search(
-                            r'\n(.*).\(FINAL .*2021-22\)',
-                            page_text,
-                            re.DOTALL
-                        )
+                        t1 = re.search(r'.*FINAL ESTIMATE OF(.*?)(\n| IN|[0-9])', page_text, re.IGNORECASE)
+                        t2 = re.search(r'\n*(.*).\(FINAL .*2021-22\)', page_text)
                         if t1:
                             heading = t1.group(1).strip()
                         elif t2:
                             heading = t2.group(1).strip() + ' CROP'
                         else:
                             raise AttributeError
-                        if heading == 'SASAMUM CROP':
+                        if page.page_number in range(43, 45) or page.page_number >= 63:
                             unit = ''
                         else:
-                            unit_search = re.search(r'(AREA .*|AV\. .*|AVG\. .*|PROD: .*|PRODUCTION .*|AV: .*|YIELD .*)\n', page_text) if page_text else ''
-                        unit = unit_search.group(1).strip() if unit_search else ''
-                        unit = unit.strip().replace(')', '')
+                            unit_search = re.search(
+                                r'(AREA .*|AV\..*|AV:.*|AVG\..*|AVG:.*|PROD:.*|PRODUCTION .*|YIELD .*)',
+                                page_text, re.IGNORECASE
+                            ) if page_text else ''
+                            unit = unit_search.group(1).strip() if unit_search else ''
+                            unit = unit.strip().replace(')', '')
                     except AttributeError as e:
                         return None
                     return None if heading == '' else (heading, unit)
                 def tabulator(page):
-                    # Default case
-                    settings = {
-                        "vertical_strategy": "text",
-                        "horizontal_strategy": "text",
-                    }
-                    table = page.extract_table(table_settings=settings)
-                    table = [row for row in table if any(val != '' for val in row)]
-                    table = table[:-1] if any('source: ' not in val for val in table[-1]) else table
-                    if page.page_number >= 8 and page.page_number <= 12:
+                    if (page.page_number >= 18 and page.page_number <= 47) or (page.page_number >= 53):
+                        settings = {
+                            "vertical_strategy": "lines",
+                            "horizontal_strategy": "lines",
+                        }
+                    else:
+                        # Default case
                         settings = {
                             "vertical_strategy": "text",
                             "horizontal_strategy": "text",
                         }
-
-                    else:
-                        header = page.extract_table()
-                        i = 0
-                        for i, row in enumerate(header):
-                            if row[0].startswith('DIVISIONS'):
-                                break
-                        header = header[i:]
-                        table_df = pd.DataFrame(table)
-                        header_df = pd.DataFrame(header)
-                        table_df.at[0] = header_df.iloc[0]
-                        table_df.at[1] = header_df.iloc[1]
+                    table = page.extract_table(table_settings=settings)
+                    table = [row for row in table if any(val != '' for val in row)]
+                    table = table[:-1] if any('source: ' not in val for val in table[-1]) else table
+                    if page.page_number >= 18 and page.page_number <= 47:
+                        return pd.DataFrame(table)
+                    header = page.extract_table()
+                    i = 0
+                    for i, row in enumerate(header):
+                        if row[0].startswith('DIVISIONS'):
+                            break
+                    header = header[i:]
+                    if header[0][0] == "DIVISIONS/":
+                        # Sugarcane Crop case
+                        header[0][0] = "DIVISIONS/\nDISTRICTS"
+                        header[1][0] = None
+                    if page.page_number >= 8 and page.page_number <= 12:
+                        # Rice Crop case
+                        for i, row in enumerate(table):
+                            new_row = [''.join([row[0], row[1]])] + [val for val in row[2:]]
+                            table[i] = new_row
+                        table.insert(3, table[3])
+                        header[0] = ['DIVISIONS/\nDISTRICTS'] + ['2021-22'] * 3 + ['2020-21'] * 3 + ['%Age Inc/Dec'] * 3
+                        header[1] = [None] + ['BAS', 'NON BAS', 'TOTAL'] * 3
+                    if page.page_number >= 48 and page.page_number <= 52:
+                        # Seasamum Crop case
+                        header[0], header[1] = header[1], header[0]
+                        header[0][0], header[1][0] = 'DIVISIONS/\nDISTRICTS', None
+                    table_df = pd.DataFrame(table)
+                    header_df = pd.DataFrame(header)
+                    table_df.at[0] = header_df.iloc[0]
+                    table_df.at[1] = header_df.iloc[1]
                     return table_df
                 self.__get_text__ = text_extractor
                 self.__get_tabulator__ = tabulator
@@ -191,8 +180,8 @@ class PDFParser:
 
 # Usage
 if __name__ == '__main__':
-    file_path = 'pdf_files/kharif_links_2020-21.pdf'
-    year_col = '2020-21'
+    file_path = 'pdf_files/kharif_links_2021-22.pdf'
+    year_col = '2021-22'
     parser = PDFParser(file_path, year_col)
     parsed_data = parser.parse_pdf()
     print(len(parsed_data))
