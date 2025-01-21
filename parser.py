@@ -23,7 +23,7 @@ class DataStore:
             self.parsed_data.append(data)
 
 class PDFParser:        
-    def __init__(self, file_path, year_col):
+    def __init__(self, file_path, year_col, crop_type):
         self.file_path = file_path
         match year_col:
             case '2023-24':
@@ -108,7 +108,7 @@ class PDFParser:
                         for i, row in enumerate(table):
                             new_row = [''.join([row[0], row[1]])] + [val for val in row[2:]]
                             table[i] = new_row
-                        table.insert(3, table[3])
+                        #table.insert(3, table[3])
                         header[0] = ['DIVISIONS/\nDISTRICTS'] + ['2021-22'] * 3 + ['2020-21'] * 3 + ['%Age Inc/Dec'] * 3
                         header[1] = [None] + ['BAS', 'NON BAS', 'TOTAL'] * 3
                     if page.page_number >= 48 and page.page_number <= 52:
@@ -123,7 +123,66 @@ class PDFParser:
                 self.__get_text__ = text_extractor
                 self.__get_tabulator__ = tabulator
             case '2020-21':
-                def text_extractor(page):
+                def text_extractor_r(page):
+                    page_text = page.extract_text()
+                    if page.page_number <= 3: 
+                        return None
+                    try:
+                        if 4 <= page.page_number <= 13 or 19 <= page.page_number <= 44 or 63<= page.page_number <= 64 or 70 <= page.page_number <= 84 or 87 <= page.page_number <= 79 or page.page_number >= 90:
+                            heading = re.search(r'FINAL ESTIMATE OF (.*)\n', page_text, re.IGNORECASE).group(1).strip()
+                            if 29 <= page.page_number <= 33 or page.page_number == 39 or 45 <= page.page_number <= 52 or 63 <= page.page_number <= 64 or page.page_number >= 70:
+                                unit = ''
+                            else:
+                                unit = re.search(r'(AREA.*|PRODUCTION.*|AVG\..*|AVG .*|AVG:.*)\n', page_text, re.IGNORECASE).group(1).strip()
+                        elif 15 <= page.page_number <= 18:
+                            heading = re.search(r'(.*)\(FINAL ESTIMATE.*\)', page_text, re.IGNORECASE).group(1).strip() + ' CROP'
+                            unit = re.search(r'(AREA.*|PRODUCTION.*|AV:.*|YIELD.*|AVG\..*|PROD.*)\n', page_text, re.IGNORECASE).group(1).strip()
+                        elif 14 == page.page_number or 45 <= page.page_number <= 62 or 65 <= page.page_number <= 69:
+                            heading = re.search(r'FINAL ESTIMATE OF (.*) IN THE.*\n', page_text, re.IGNORECASE).group(1).strip()
+                            if 45 <= page.page_number <= 52:
+                                unit = ''
+                            else:
+                                unit = re.search(r'(AREA.*|PRODUCTION.*|AV:.*|YIELD.*|AVG\..*|PROD.*)\n', page_text, re.IGNORECASE).group(1).strip()
+                        else:
+                            raise AttributeError
+                    except AttributeError as e:
+                        return None
+                    return None if heading == '' else (heading, unit)
+                def tabulator_r(page):
+                    table_df = None
+                    if 4 <= page.page_number <= 13 or 19 <= page.page_number <= 57 or 63 <= page.page_number <= 64 or 70 <= page.page_number <= 85 or 87 <= page.page_number <= 88 or page.page_number >= 90:
+                        settings = {
+                            "vertical_strategy": "lines",
+                            "horizontal_strategy": "lines"
+                        }  
+                        table = page.extract_table(table_settings=settings)
+                        table_df = pd.DataFrame(table)
+                    elif 14 <= page.page_number <= 18 or 58 <= page.page_number <= 62 or 65 <= page.page_number <= 69:
+                        settings = {
+                            "vertical_strategy": "text",
+                            "horizontal_strategy": "text"
+                        }
+                        table = page.extract_table(table_settings=settings)
+                        header = page.extract_table()
+                        table = [row for row in table if any(val != '' for val in row)]
+                        table = table[:-1] if any('bhawalnagar' not in val.lower().strip() for val in table[-1]) else table
+                        i = 0
+                        for i, row in enumerate(table):
+                            if row[0].startswith('DIVISION'):
+                                break
+                        table = table[i:]
+                        if 58 <= page.page_number <= 62 or 65 <= page.page_number <= 69:
+                            # Swap row 1 <-> row 2
+                            header[0], header[1] = header[1], header[0]
+                            header[0][0], header[1][0] = header[1][0].split('/')
+                        table_df = pd.DataFrame(table)
+                        header_df = pd.DataFrame(header)
+                        table_df.at[0] = header_df.iloc[0]
+                        table_df.at[1] = header_df.iloc[1]
+                    else:
+                        raise Exception
+                    return table_df
+                def text_extractor_k(page):
                     page_text = page.extract_text()
                     if page.page_number <= 2: 
                         return None
@@ -137,13 +196,13 @@ class PDFParser:
                     except AttributeError as e:
                         return None
                     return None if heading == '' else (heading, unit)
-                def tabulator(page):
+                def tabulator_k(page):
                     settings = {
                         "vertical_strategy": "lines",
                         "horizontal_strategy": "lines"
                     }
                     table = page.extract_table(table_settings=settings)
-                    table.insert(2, table[2])
+                    #table.insert(2, table[2])
                     if page.page_number >= 70 and page.page_number <= 72:
                         table = [row[:-2] for row in table]
                         table = [[table[0][0]] + ['2020-21' for _ in range(len(table[0])-1)]] + table
@@ -154,8 +213,8 @@ class PDFParser:
                     table_df = pd.DataFrame(table)
                     
                     return table_df
-                self.__get_text__ = text_extractor
-                self.__get_tabulator__ = tabulator
+                self.__get_text__ = text_extractor_k if crop_type == 'kharif' else text_extractor_r
+                self.__get_tabulator__ = tabulator_k if crop_type == 'kharif' else tabulator_r
                 
 
 
@@ -180,8 +239,9 @@ class PDFParser:
 
 # Usage
 if __name__ == '__main__':
-    file_path = 'pdf_files/kharif_links_2023-24.pdf'
-    year_col = '2023-24'
-    parser = PDFParser(file_path, year_col)
+    file_path = 'pdf_files/rabi_links_2020-21.pdf'
+    year_col = '2020-21'
+    crop_type = 'rabi'
+    parser = PDFParser(file_path, year_col, crop_type)
     parsed_data = parser.parse_pdf()
     print(len(parsed_data))

@@ -22,7 +22,7 @@ def parse(base_dir, prev_year_incl):
             continue
         crop_type, _, year_col = file_path.split('_')
         year_col = year_col.split('.')[0]
-        parser = PDFParser(os.path.join(base_dir, file_path), year_col)
+        parser = PDFParser(os.path.join(base_dir, file_path), year_col, crop_type)
         parsed_data = parser.parse_pdf()
         combined_df  = clean_all_files(parsed_data, crop_type, year_col)
         if prev_year_incl:

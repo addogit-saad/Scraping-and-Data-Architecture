@@ -12,6 +12,9 @@ def create_cleaned_table(data, crop_type, year_col):
             df.at[0, 0], df.at[1, 0] = df.iloc[0, 0].split('/\n')
         except Exception:
             df.at[0, 0], df.at[1, 0] = df.iloc[0, 0].split('/')
+    else:
+        df.at[0, 0] = df.iloc[0, 0].replace('/', '').strip()
+        df.at[1, 0] = df.iloc[1, 0].strip()
     if data['unit'] == '':
         df.at[0, 0], df.at[1, 0] = df.iloc[1, 0], df.iloc[0, 0]
     df.at[0, 0] = df.iloc[0, 0].upper().strip()
@@ -24,6 +27,8 @@ def create_cleaned_table(data, crop_type, year_col):
             ix += 1
             if 'PUNJAB' in row:
                 return ix
+            if 'RAWALPINIDI' in row:
+                return ix - 1
         return -1
 
     # Fix column levels
