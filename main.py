@@ -17,6 +17,7 @@ def parse(base_dir, prev_year_incl):
         file_paths = [file_paths]
     else:
         file_paths = os.listdir(base_dir)
+    final_df = []
     for file_path in file_paths:
         if file_path == 'backup':
             continue
@@ -25,12 +26,15 @@ def parse(base_dir, prev_year_incl):
         parser = PDFParser(os.path.join(base_dir, file_path), year_col, crop_type)
         parsed_data = parser.parse_pdf()
         combined_df  = clean_all_files(parsed_data, crop_type, year_col)
-        if prev_year_incl:
+        if prev_year_incl and year_col != '2020-21':
             year_1, year_2 = list(map(lambda x: int(x), year_col.split('-')))
             year_col_2 = f'{year_1-1}-{year_2-1}'
             combined_df_2 = clean_all_files(parsed_data, crop_type, year_col_2)
             combined_df = pd.concat([combined_df, combined_df_2], axis=0)
         combined_df.to_csv(f'{crop_type}_{year_col}.csv', index=False)
+        final_df.append(combined_df)
+    if len(final_df) > 1:
+        pd.concat(final_df, axis=0).to_parquet('DATA.parquet')
 
 def main():
     parser = argparse.ArgumentParser(description='Process some integers.')

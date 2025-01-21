@@ -22,9 +22,7 @@ def create_cleaned_table(data, crop_type, year_col):
     df.columns = pd.MultiIndex.from_arrays([df.iloc[0], df.iloc[1]])
 
     def fetch_drop_index(iter_df):
-        ix = 0
-        for row in iter_df[('DIVISIONS', 'DISTRICTS')]:
-            ix += 1
+        for ix, row in enumerate(iter_df[('DIVISIONS', 'DISTRICTS')]):
             if 'PUNJAB' in row:
                 return ix
             if 'RAWALPINIDI' in row:
@@ -86,6 +84,8 @@ def create_cleaned_table(data, crop_type, year_col):
         try:
             return str(float(val))
         except ValueError:
+            return 'NOVAL'
+        except TypeError:
             return 'NOVAL'
     df['MEASURE_VALUE'] = df['MEASURE_VALUE'].apply(convert_to_numeric)
     df = df[df['MEASURE_VALUE'] != 'NOVAL']
