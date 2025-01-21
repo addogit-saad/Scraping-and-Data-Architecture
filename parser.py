@@ -180,8 +180,8 @@ class PDFParser:
 
 # Usage
 if __name__ == '__main__':
-    file_path = 'pdf_files/kharif_links_2021-22.pdf'
-    year_col = '2021-22'
+    file_path = 'pdf_files/kharif_links_2023-24.pdf'
+    year_col = '2023-24'
     parser = PDFParser(file_path, year_col)
     parsed_data = parser.parse_pdf()
     print(len(parsed_data))

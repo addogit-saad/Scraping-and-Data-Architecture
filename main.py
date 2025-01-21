@@ -66,7 +66,7 @@ def main():
             scraper = GetData(base_link, force=True)
             scraper.download()
     # Parse data here
-    prev_year_incl = bool(args).prev if args.prev is not None else False
+    prev_year_incl = bool(args.prev) if args.prev is not None else False
     base_dir = args.base_dir if args.base_dir else 'pdf_files'
     parse(base_dir, prev_year_incl=prev_year_incl)
 
