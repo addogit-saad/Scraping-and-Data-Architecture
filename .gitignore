@@ -1,5 +1,3 @@
 Cleaned CSVs
-.vscode/launch.json
-__pycache__/cleaner.cpython-313.pyc
-__pycache__/parser.cpython-313.pyc
-__pycache__/scrapper.cpython-313.pyc
+.vscode
+__pycache__

@@ -1,4 +1,3 @@
 Progress Report
-- V1: initial scraping 
-- parser: Create parser for pdf
-- master: merged all branches and created main
+- bugs persistent in reading older files.
+- create BUGFIX branch to check and fix bug fixes on scraping data as well
