@@ -1,4 +1,5 @@
 import pdfplumber
+from pdfplumber.table import TableFinder
 import pandas as pd
 import re
 from tqdm import tqdm
@@ -37,9 +38,16 @@ class PDFParser:
                         return None
                     return None if heading == '' else (heading, unit)
                 def tabulator(page):
+                    def get_lines(page):
+                        lines = [round(line['x1']) for line in page.vertical_edges if 70 < line['top'] < 90]
+                        unique_lines = set(lines)
+                        filtered_lines = sorted(unique_lines)
+                        filtered_lines = [line for i, line in enumerate(filtered_lines) if i == 0 or abs(line - filtered_lines[i - 1]) >= 5]
+                        return filtered_lines
                     settings = {
-                        "vertical_strategy": "text",
-                        "horizontal_strategy": "text"
+                        "vertical_strategy": "explicit",
+                        "horizontal_strategy": "text",
+                        "explicit_vertical_lines": get_lines(page)
                     }
                     table = page.extract_table(table_settings=settings)
                     table_df = pd.DataFrame(table)
@@ -269,8 +277,6 @@ class PDFParser:
                 self.__get_text__ = text_extractor_k if crop_type == 'kharif' else text_extractor_r
                 self.__get_tabulator__ = tabulator_k if crop_type == 'kharif' else tabulator_r
                 
-
-
     def get_text(self, page):
         return self.__get_text__(page=page)
 
@@ -292,9 +298,9 @@ class PDFParser:
 
 # Usage
 if __name__ == '__main__':
-    file_path = 'pdf_files/rabi_links_2020-21.pdf'
-    year_col = '2020-21'
-    crop_type = 'rabi'
+    file_path = 'pdf_files/kharif_links_2023-24.pdf'
+    year_col = '2023-24'
+    crop_type = 'kharif'
     parser = PDFParser(file_path, year_col, crop_type)
     parsed_data = parser.parse_pdf()
     print(len(parsed_data))
