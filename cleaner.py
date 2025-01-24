@@ -89,6 +89,7 @@ def create_cleaned_table(data, crop_type, year_col):
             return 'NOVAL'
     df['MEASURE_VALUE'] = df['MEASURE_VALUE'].apply(convert_to_numeric)
     df = df[df['MEASURE_VALUE'] != 'NOVAL']
-    df.loc[:, 'MEASURE_VALUE'] = df['MEASURE_VALUE'].astype(np.float32)
+    df.loc[:, 'MEASURE_VALUE'] = df['MEASURE_VALUE'].astype(np.float64).round(2)
+    df.loc[:, 'MEASURE_TYPE'] = df['MEASURE_TYPE'].str.strip().str.title()
     df['CROP_TYPE'] = crop_type.title()
     return df[['CROP_TYPE', 'YEAR', 'TITLE', 'DIVISIONS', 'DISTRICTS', 'MEASURE_TYPE', 'UNIT', 'MEASURE_VALUE']].reset_index(drop=True)
