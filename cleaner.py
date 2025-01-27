@@ -52,6 +52,7 @@ def create_cleaned_table(data, crop_type, year_col):
         extract_drop = re.search(r'.*PUNJAB.*', district_val, flags = re.IGNORECASE)
         if district_val == '':
             df.drop(index=ix, axis=0, inplace=True)
+            continue
         if extract_drop:
             df.drop(index=ix, axis=0, inplace=True)
             continue
