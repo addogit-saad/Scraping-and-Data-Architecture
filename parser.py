@@ -3,6 +3,7 @@ from pdfplumber.table import TableFinder
 import pandas as pd
 import re
 from tqdm import tqdm
+import numpy as np
 
 
 class DataStore:
@@ -138,49 +139,46 @@ class PDFParser:
                         return None
                     return None if heading == '' else (heading, unit)
                 def tabulator_k(page):
-                    if (page.page_number >= 18 and page.page_number <= 47) or (page.page_number >= 53):
-                        settings = {
-                            "vertical_strategy": "lines",
-                            "horizontal_strategy": "lines",
-                        }
+                    def get_lines(page):
+                        lines = [round(line['x1']) for line in page.vertical_edges if 0 < line['top'] < 150]
+                        unique_lines = set(lines)
+                        filtered_lines = sorted(unique_lines)
+                        filtered_lines = [line for i, line in enumerate(filtered_lines) if i == 0 or abs(line - filtered_lines[i - 1]) >= 3]
+                        return filtered_lines
+                    settings = {
+                        "vertical_strategy": "explicit",
+                        "horizontal_strategy": "text"
+                    }
+                    if 8 <= page.page_number <= 12:
+                        temp_lines = get_lines(page)
+                        columns_1 = np.linspace(temp_lines[1], temp_lines[2], 5).tolist()
+                        columns_2 = np.linspace(temp_lines[2], temp_lines[3], 5).tolist()[1:]
+                        columns_3 = np.linspace(temp_lines[3], temp_lines[4], 5).tolist()[1:]
+                        lines = [temp_lines[0]] + columns_1 + columns_2 + columns_3
+                        settings['explicit_vertical_lines'] = lines
                     else:
-                        # Default case
-                        settings = {
-                            "vertical_strategy": "text",
-                            "horizontal_strategy": "text",
-                        }
+                        settings["explicit_vertical_lines"] = get_lines(page)
                     table = page.extract_table(table_settings=settings)
                     table = [row for row in table if any(val != '' for val in row)]
-                    table = table[:-1] if any('source: ' not in val for val in table[-1]) else table
-                    if page.page_number >= 18 and page.page_number <= 47:
-                        return pd.DataFrame(table)
-                    header = page.extract_table()
+                    # Extract header
                     i = 0
-                    for i, row in enumerate(header):
-                        if row[0].startswith('DIVISIONS'):
+                    for i, row in enumerate(table):
+                        if any('division' in val.lower() for val in row):
                             break
-                    header = header[i:]
-                    if header[0][0] == "DIVISIONS/":
-                        # Sugarcane Crop case
-                        header[0][0] = "DIVISIONS/\nDISTRICTS"
-                        header[1][0] = None
-                    if page.page_number >= 8 and page.page_number <= 12:
-                        # Rice Crop case
-                        for i, row in enumerate(table):
-                            new_row = [''.join([row[0], row[1]])] + [val for val in row[2:]]
-                            table[i] = new_row
-                        #table.insert(3, table[3])
-                        header[0] = ['DIVISIONS/\nDISTRICTS'] + ['2021-22'] * 3 + ['2020-21'] * 3 + ['%Age Inc/Dec'] * 3
-                        header[1] = [None] + ['BAS', 'NON BAS', 'TOTAL'] * 3
-                    if page.page_number >= 48 and page.page_number <= 52:
-                        # Seasamum Crop case
-                        header[0], header[1] = header[1], header[0]
-                        header[0][0], header[1][0] = 'DIVISIONS/\nDISTRICTS', None
-                    table_df = pd.DataFrame(table)
-                    header_df = pd.DataFrame(header)
-                    table_df.at[0] = header_df.iloc[0]
-                    table_df.at[1] = header_df.iloc[1]
-                    return table_df
+                    table = table[i:]
+                    # Fix header
+                    if page.page_number <= 42 or 53 <= page.page_number <= 57:
+                        table[0] = [table[0][0]] + ['2021-22'] * 3 + ['2020-21'] * 3 + ['%Age change'] * 3
+                    elif 48 <= page.page_number <= 52:
+                        header = page.extract_table()
+                        table[0], table[1] = [header[0][0]] + header[1][1:], [header[1][0]] + header[0][1:]
+                    elif 58 <= page.page_number <= 62:
+                        table[0] = [table[0][0]] + ['2021-22'] * 5 + ['2020-21'] * 5 + ['%Age change'] * 5
+                    else:
+                        header = page.extract_table()
+                        table[0], table[1] = header[0], header[1]
+                    table = table[:-1] if any('source' in val.lower() for val in table[-1]) else table
+                    return pd.DataFrame(table)
                 self.__get_text__ = text_extractor_k if crop_type == 'kharif' else text_extractor_r
                 self.__get_tabulator__ = tabulator_k if crop_type == 'kharif' else tabulator_r
             case '2020-21':
@@ -298,8 +296,8 @@ class PDFParser:
 
 # Usage
 if __name__ == '__main__':
-    file_path = 'pdf_files/kharif_links_2023-24.pdf'
-    year_col = '2023-24'
+    file_path = 'pdf_files/kharif_links_2021-22.pdf'
+    year_col = '2021-22'
     crop_type = 'kharif'
     parser = PDFParser(file_path, year_col, crop_type)
     parsed_data = parser.parse_pdf()
