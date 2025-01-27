@@ -2,3 +2,4 @@ Cleaned CSVs
 .vscode
 __pycache__
 test.py
+env
