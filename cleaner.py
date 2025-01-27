@@ -50,6 +50,8 @@ def create_cleaned_table(data, crop_type, year_col):
         extract = re.search(r'(.*) D.*V.*:', district_val, flags = re.IGNORECASE)
         # Drop row if row district has punjab.
         extract_drop = re.search(r'.*PUNJAB.*', district_val, flags = re.IGNORECASE)
+        if district_val == '':
+            df.drop(index=ix, axis=0, inplace=True)
         if extract_drop:
             df.drop(index=ix, axis=0, inplace=True)
             continue
@@ -75,7 +77,7 @@ def create_cleaned_table(data, crop_type, year_col):
             try:
                 df.loc[ix, 'MEASURE_TYPE'], df.loc[ix, 'UNIT'] = re.search(r'(.*)\((.*)\)', row_val).groups()
             except Exception:
-                temp = df.loc[ix, 'UNIT'].split(' ')
+                temp = row_val.split(' ')
                 df.loc[ix, 'MEASURE_TYPE'], df.loc[ix, 'UNIT'] = temp[0], temp[-1]
 
     else:

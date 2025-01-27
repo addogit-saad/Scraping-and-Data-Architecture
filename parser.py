@@ -145,39 +145,40 @@ class PDFParser:
                         filtered_lines = sorted(unique_lines)
                         filtered_lines = [line for i, line in enumerate(filtered_lines) if i == 0 or abs(line - filtered_lines[i - 1]) >= 3]
                         return filtered_lines
-                    settings = {
-                        "vertical_strategy": "explicit",
-                        "horizontal_strategy": "text"
-                    }
-                    if 8 <= page.page_number <= 12:
-                        temp_lines = get_lines(page)
-                        columns_1 = np.linspace(temp_lines[1], temp_lines[2], 5).tolist()
-                        columns_2 = np.linspace(temp_lines[2], temp_lines[3], 5).tolist()[1:]
-                        columns_3 = np.linspace(temp_lines[3], temp_lines[4], 5).tolist()[1:]
-                        lines = [temp_lines[0]] + columns_1 + columns_2 + columns_3
-                        settings['explicit_vertical_lines'] = lines
-                    else:
-                        settings["explicit_vertical_lines"] = get_lines(page)
-                    table = page.extract_table(table_settings=settings)
-                    table = [row for row in table if any(val != '' for val in row)]
-                    # Extract header
-                    i = 0
-                    for i, row in enumerate(table):
-                        if any('division' in val.lower() for val in row):
-                            break
-                    table = table[i:]
-                    # Fix header
-                    if page.page_number <= 42 or 53 <= page.page_number <= 57:
-                        table[0] = [table[0][0]] + ['2021-22'] * 3 + ['2020-21'] * 3 + ['%Age change'] * 3
-                    elif 48 <= page.page_number <= 52:
-                        header = page.extract_table()
-                        table[0], table[1] = [header[0][0]] + header[1][1:], [header[1][0]] + header[0][1:]
-                    elif 58 <= page.page_number <= 62:
-                        table[0] = [table[0][0]] + ['2021-22'] * 5 + ['2020-21'] * 5 + ['%Age change'] * 5
-                    else:
-                        header = page.extract_table()
+                    if page.page_number <= 17 or 48 <= page.page_number <= 52:
+                        settings = {
+                            "vertical_strategy": "explicit",
+                            "horizontal_strategy": "text"
+                        }
+                        if 8 <= page.page_number <= 12:
+                            temp_lines = get_lines(page)
+                            columns_1 = np.linspace(temp_lines[1], temp_lines[2], 5).tolist()
+                            columns_2 = np.linspace(temp_lines[2], temp_lines[3], 5).tolist()[1:]
+                            columns_3 = np.linspace(temp_lines[3], temp_lines[4], 5).tolist()[1:]
+                            lines = [temp_lines[0]] + columns_1 + columns_2 + columns_3
+                            settings['explicit_vertical_lines'] = lines
+                        else:
+                            settings["explicit_vertical_lines"] = get_lines(page)
+                        table = page.extract_table(table_settings=settings)
+                        table = [row for row in table if any(val != '' for val in row)]
+                        # Extract header
+                        i = 0
+                        for i, row in enumerate(table):
+                            if any('division' in val.lower() for val in row):
+                                break
+                        table = table[i:]
+                        # Fix header
+                        header = page.extract_table(table_settings = {'vertical_strategy': 'lines', 'horizontal_strategy': 'lines'})
+                        i = 0
+                        for i, row in enumerate(header):
+                            if any('division' in val.lower() for val in row if val):
+                                break
+                        header = header[i:i+2]
                         table[0], table[1] = header[0], header[1]
-                    table = table[:-1] if any('source' in val.lower() for val in table[-1]) else table
+                        if 48 <= page.page_number <= 52: # Fix header
+                            table[0], table[1] = [table[0][0]] + table[1][1:], [table[1][0]] + table[0][1:]
+                    else:
+                        table = page.extract_table(table_settings = {'vertical_strategy': 'lines', 'horizontal_strategy': 'lines'})
                     return pd.DataFrame(table)
                 self.__get_text__ = text_extractor_k if crop_type == 'kharif' else text_extractor_r
                 self.__get_tabulator__ = tabulator_k if crop_type == 'kharif' else tabulator_r
