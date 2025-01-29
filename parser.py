@@ -82,39 +82,37 @@ class PDFParser:
                         return None
                     return None if heading == '' else (heading, unit)
                 def tabulator_r(page):
-                    table_df = None
-                    if 13 <= page.page_number <= 48 or page.page_number >= 64:
+                    def get_lines(page):
+                        lines = [round(line['x1']) for line in page.vertical_edges if 20 < line['top'] < 100]
+                        unique_lines = set(lines)
+                        filtered_lines = sorted(unique_lines)
+                        filtered_lines = [line for i, line in enumerate(filtered_lines) if i == 0 or abs(line - filtered_lines[i - 1]) >= 3]
+                        return filtered_lines
+                    if 3 <= page.page_number <= 12 or 49 <= page.page_number <= 63:
                         settings = {
-                            "vertical_strategy": "lines",
-                            "horizontal_strategy": "lines"
-                        }  
-                        table = page.extract_table(table_settings=settings)
-                        table_df = pd.DataFrame(table)
-                    elif 3 <= page.page_number <= 12 or 49 <= page.page_number <= 63:
-                        settings = {
-                            "vertical_strategy": "text",
-                            "horizontal_strategy": "text"
+                            "vertical_strategy": "explicit",
+                            "horizontal_strategy": "text",
+                            "explicit_vertical_lines": get_lines(page)
                         }
                         table = page.extract_table(table_settings=settings)
-                        header = page.extract_table()
                         table = [row for row in table if any(val != '' for val in row)]
-                        table = table[:-1] if any('bhawalnagar' not in val.lower().strip() for val in table[-1]) else table
+                        # Extract header
                         i = 0
                         for i, row in enumerate(table):
-                            if row[0].startswith('DIVISION'):
+                            if any('division' in val.lower() for val in row):
                                 break
                         table = table[i:]
-                        if 8 <= page.page_number <= 12 or 49 <= page.page_number <= 63:
-                            # Swap row 1 <-> row 2
-                            header[0], header[1] = header[1], header[0]
-                            header[0][0], header[1][0] = header[1][0].split('/')
-                        table_df = pd.DataFrame(table)
-                        header_df = pd.DataFrame(header)
-                        table_df.at[0] = header_df.iloc[0]
-                        table_df.at[1] = header_df.iloc[1]
-                    else:
-                        raise Exception
-                    return table_df
+                        # Fix header
+                        header = page.extract_table(table_settings={"vertical_strategy":"lines", "horizontal_strategy":"lines"})
+                        table[0], table[1] = header[0], header[1]
+                        if not (3 <= page.page_number < 8):
+                            # Swap headers in header.
+                            table[0], table[1] = [table[0][0]] + table[1][1:], [table[0][0]] + table[0][1:]
+                        return pd.DataFrame(table)
+                    settings = {"vertical_strategy":"lines", "horizontal_strategy":"lines"}
+                    table = page.extract_table(table_settings=settings)
+                    return pd.DataFrame(table)
+
                 def text_extractor_k(page):
                     page_text = page.extract_text()
                     try:
@@ -297,9 +295,9 @@ class PDFParser:
 
 # Usage
 if __name__ == '__main__':
-    file_path = 'pdf_files/kharif_links_2021-22.pdf'
+    file_path = 'pdf_files/rabi_links_2021-22.pdf'
     year_col = '2021-22'
-    crop_type = 'kharif'
+    crop_type = 'rabi'
     parser = PDFParser(file_path, year_col, crop_type)
     parsed_data = parser.parse_pdf()
     print(len(parsed_data))
