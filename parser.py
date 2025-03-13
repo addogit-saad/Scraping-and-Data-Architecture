@@ -26,6 +26,7 @@ class DataStore:
 class PDFParser:        
     def __init__(self, file_path, year_col, crop_type):
         self.file_path = file_path
+        year_col = '2023-24' if int(year_col.split('-')[0]) > 2023 else year_col
         match year_col:
             case '2023-24':
                 def text_extractor(page):
