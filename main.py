@@ -1,4 +1,4 @@
-from scrapper import GetData
+# from scrapper import GetData
 from parser import PDFParser
 import os
 import argparse
@@ -39,6 +39,7 @@ def parse(base_dir, prev_year_incl):
 def main():
     parser = argparse.ArgumentParser(description='Process some integers.')
     parser.add_argument('--cmd', type=str, help="""
+                        THIS COMMAND IS DEPRECATED AND WILL NOT BE MAINTAINED
                         default case is force and download
                         [force/download/parse.]
                             force: Force download the web data.
@@ -57,22 +58,26 @@ def main():
 
     match args.cmd:
         case 'force':
+            raise DeprecationWarning('The following implementation is deprecated.')
             base_link = 'https://crs.agripunjab.gov.pk/reports'
             scraper = GetData(base_link, force=True)
         case 'download':
+            raise DeprecationWarning('The following implementation is deprecated.')
             base_link = 'https://crs.agripunjab.gov.pk/reports'
-            scraper = GetData(base_link)
+            scraper = GetData(base_link) #, force=True)
             scraper.download()
         case 'parse':
             pass
         case _:
-            base_link = 'https://crs.agripunjab.gov.pk/reports'
-            scraper = GetData(base_link, force=True)
-            scraper.download()
+            pass
     # Parse data here
     prev_year_incl = bool(args.prev) if args.prev is not None else False
     base_dir = args.base_dir if args.base_dir else 'pdf_files'
     parse(base_dir, prev_year_incl=prev_year_incl)
 
 if __name__ == '__main__':
-    main()
+    try:
+        main()
+    except Exception as e:
+        print('An error occured in the execution of the program.')
+        print(e)
